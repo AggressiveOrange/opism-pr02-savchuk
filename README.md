@@ -65,6 +65,7 @@ Location: https://knu.ua/
 <hr><center>nginx/1.1.19</center>
 </body>
 </html>
+
 ```
 
 ---
@@ -74,13 +75,33 @@ Location: https://knu.ua/
 **Команда:**
 
 ```
-<текст команди>
+$d = "knu.ua"
+$c = New-Object System.Net.Sockets.TcpClient($d, 80)
+$s = $c.GetStream()
+$w = New-Object System.IO.StreamWriter($s)
+$w.Write("GET / HTTP/1.1`r`nConnection: close`r`n`r`n")
+$w.Flush()
+(New-Object System.IO.StreamReader($s)).ReadToEnd()
 ```
 
 **Вивід:**
 
 ```
-<повний вивід>
+HTTP/1.1 400 Bad Request
+Server: nginx/1.1.19
+Date: Wed, 30 Sep 2026 10:54:54 GMT
+Content-Type: text/html
+Content-Length: 173
+Connection: close
+
+<html>
+<head><title>400 Bad Request</title></head>
+<body bgcolor="white">
+<center><h1>400 Bad Request</h1></center>
+<hr><center>nginx/1.1.19</center>
+</body>
+</html>
+
 ```
 
 ---
@@ -92,13 +113,20 @@ Location: https://knu.ua/
 **Команда:**
 
 ```
-<текст команди>
+$d = "knu.ua"
+$c = New-Object System.Net.Sockets.TcpClient($d, 80)
+$s = $c.GetStream()
+$w = New-Object System.IO.StreamWriter($s)
+$w.Write("GET / HTTP/1.1`r`nHost: netbsd.org`r`nConnection: close`r`n`r`n")
+$w.Flush()
+(New-Object System.IO.StreamReader($s)).ReadToEnd()
+$c.Close()
 ```
 
 **Вивід:**
 
 ```
-<повний вивід>
+
 ```
 
 #### A.3.2. Неіснуюче ім'я в полі `Host`
@@ -106,13 +134,34 @@ Location: https://knu.ua/
 **Команда:**
 
 ```
-<текст команди>
+$d = "knu.ua"
+$c = New-Object System.Net.Sockets.TcpClient($d, 80)
+$s = $c.GetStream()
+$w = New-Object System.IO.StreamWriter($s)
+$w.Write("GET / HTTP/1.1`r`nHost: opism-pr02.invalid`r`nConnection: close`r`n`r`n")
+$w.Flush()
+(New-Object System.IO.StreamReader($s)).ReadToEnd()
 ```
 
 **Вивід:**
 
 ```
-<повний вивід>
+HTTP/1.1 301 Moved Permanently
+Server: nginx/1.1.19
+Date: Wed, 30 Sep 2026 11:08:02 GMT
+Content-Type: text/html
+Content-Length: 185
+Connection: close
+Location: https://knu.ua/
+
+<html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx/1.1.19</center>
+</body>
+</html>
+
 ```
 
 #### A.3.3. Запит без поля `Host` у версії 1.0
@@ -120,13 +169,34 @@ Location: https://knu.ua/
 **Команда:**
 
 ```
-<текст команди>
+$d = "knu.ua"
+$c = New-Object System.Net.Sockets.TcpClient($d, 80)
+$s = $c.GetStream()
+$w = New-Object System.IO.StreamWriter($s)
+$w.Write("GET / HTTP/1.0`r`n`r`n")
+$w.Flush()
+(New-Object System.IO.StreamReader($s)).ReadToEnd()
 ```
 
 **Вивід:**
 
 ```
-<повний вивід>
+HTTP/1.1 301 Moved Permanently
+Server: nginx/1.1.19
+Date: Wed, 30 Sep 2026 11:10:36 GMT
+Content-Type: text/html
+Content-Length: 185
+Connection: close
+Location: https://knu.ua/
+
+<html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx/1.1.19</center>
+</body>
+</html>
+
 ```
 
 Зведення результатів наведено в **Додатку Д**.
