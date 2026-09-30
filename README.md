@@ -264,39 +264,91 @@ Location: https://knu.ua/
 **Команда:**
 
 ```
-<текст команди>
+curl.exe -v --http1.1 http://knu.ua/ -o /dev/null
 ```
 
 **Вивід:**
 
 ```
-<повний вивід>
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0*   Trying 91.202.128.77:80...
+* Connected to knu.ua (91.202.128.77) port 80
+> GET / HTTP/1.1
+> Host: knu.ua
+> User-Agent: curl/8.4.0
+> Accept: */*
+>
+< HTTP/1.1 301 Moved Permanently
+< Server: nginx/1.1.19
+< Date: Wed, 30 Sep 2026 11:21:19 GMT
+< Content-Type: text/html
+< Content-Length: 185
+< Connection: keep-alive
+< Location: https://knu.ua/
+<
+{ [185 bytes data]
+Warning: Failed to open the file /dev/null: No such file or directory
+* Failure writing output to destination
+100   185  100   185    0     0   3972      0 --:--:-- --:--:-- --:--:--  4111
+* Closing connection
+curl: (23) Failure writing output to destination
 ```
 
 ---
 
 ### Завдання A.6. Запит через захищене з'єднання
 
-**Ресурс, на якому виконано завдання:** <власний домен / `iana.org`>
+**Ресурс, на якому виконано завдання:** <`knu.ua` / `iana.org`>
 
-**Підстава для використання резервного ресурсу (заповнюють за потреби):**
+**Підстава для використання резервного ресурсу (заповнюють за потреби): після встановлення з'єднання та вводу запиту із завдання А.1, код стану всеодно не змінився і залишився 301**
 
 **Команда:**
 
 ```
-<текст команди>
+$d = "iana.org"
+$c = New-Object System.Net.Sockets.TcpClient($d, 80)
+$s = $c.GetStream()
+$w = New-Object System.IO.StreamWriter($s)
+$w.Write("GET / HTTP/1.1`r`nHost: $d`r`nConnection: close`r`n`r`n")
+$w.Flush()
+(New-Object System.IO.StreamReader($s)).ReadToEnd()
+$c.Close()
 ```
 
 **Набраний запит:**
 
 ```
-<текст запиту>
+$d = "iana.org"
+$c = New-Object System.Net.Sockets.TcpClient($d, 80)
+$s = $c.GetStream()
+$w = New-Object System.IO.StreamWriter($s)
+$w.Write("GET / HTTP/1.1`r`nHost: $d`r`nConnection: close`r`n`r`n")
+$w.Flush()
+(New-Object System.IO.StreamReader($s)).ReadToEnd()
 ```
 
 **Вивід:**
 
 ```
-<повний вивід>
+HTTP/1.1 301 Moved Permanently
+Date: Wed, 30 Sep 2026 12:11:02 GMT
+Server: Apache
+Location: https://www.iana.org/
+Cache-Control: max-age=345600
+Expires: Sun, 04 Oct 2026 12:11:02 GMT
+Content-Length: 229
+Connection: close
+Content-Type: text/html; charset=iso-8859-1
+
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html><head>
+<title>301 Moved Permanently</title>
+</head><body>
+<h1>Moved Permanently</h1>
+<p>The document has moved <a href="https://www.iana.org/">here</a>.</p>
+</body></html>
+
 ```
 
 ---
