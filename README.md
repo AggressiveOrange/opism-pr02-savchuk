@@ -25,19 +25,46 @@
 **Команда:**
 
 ```
-<текст команди>
+$d = "knu.ua"
+$c = New-Object System.Net.Sockets.TcpClient($d, 80)
+$s = $c.GetStream()
+$w = New-Object System.IO.StreamWriter($s)
+$w.Write("GET / HTTP/1.1`r`nHost: $d`r`nConnection: close`r`n`r`n")
+$w.Flush()
+(New-Object System.IO.StreamReader($s)).ReadToEnd()
+$c.Close()
 ```
 
 **Набраний запит:**
 
 ```
-<текст запиту, набраний з клавіатури, включно з порожнім рядком>
+$d = "knu.ua"
+$c = New-Object System.Net.Sockets.TcpClient($d, 80)
+$s = $c.GetStream()
+$w = New-Object System.IO.StreamWriter($s)
+$w.Write("GET / HTTP/1.1`r`nHost: $d`r`nConnection: close`r`n`r`n")
+$w.Flush()
+(New-Object System.IO.StreamReader($s)).ReadToEnd()
 ```
 
 **Відповідь:**
 
 ```
-<повний текст відповіді>
+HTTP/1.1 301 Moved Permanently
+Server: nginx/1.1.19
+Date: Wed, 30 Sep 2026 10:48:49 GMT
+Content-Type: text/html
+Content-Length: 185
+Connection: close
+Location: https://knu.ua/
+
+<html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx/1.1.19</center>
+</body>
+</html>
 ```
 
 ---
