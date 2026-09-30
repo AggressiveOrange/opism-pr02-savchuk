@@ -208,18 +208,54 @@ Location: https://knu.ua/
 **Команда:**
 
 ```
-<текст команди>
+$d = "knu.ua"
+$c = New-Object System.Net.Sockets.TcpClient($d, 80)
+$s = $c.GetStream()
+$w = New-Object System.IO.StreamWriter($s)
+$w.Write("GET /opism-pr02-12345 HTTP/1.1`r`nHost: $d`r`n`r`nGET / HTTP/1.1`r`nHost: $d`r`nConnection: close`r`n`r`n")
+$w.Flush()
+(New-Object System.IO.StreamReader($s)).ReadToEnd()
 ```
 
 **Вивід:**
 
 ```
-<повний вивід>
+HTTP/1.1 301 Moved Permanently
+Server: nginx/1.1.19
+Date: Wed, 30 Sep 2026 11:14:21 GMT
+Content-Type: text/html
+Content-Length: 185
+Connection: keep-alive
+Location: https://knu.ua/opism-pr02-12345
+
+<html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx/1.1.19</center>
+</body>
+</html>
+HTTP/1.1 301 Moved Permanently
+Server: nginx/1.1.19
+Date: Wed, 30 Sep 2026 11:14:21 GMT
+Content-Type: text/html
+Content-Length: 185
+Connection: close
+Location: https://knu.ua/
+
+<html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx/1.1.19</center>
+</body>
+</html>
+
 ```
 
-**Кількість отриманих відповідей:**
+**Кількість отриманих відповідей: 2**
 
-**Коди стану отриманих відповідей:**
+**Коди стану отриманих відповідей: 301**
 
 ---
 
